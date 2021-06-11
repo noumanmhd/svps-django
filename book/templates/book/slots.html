@@ -1,0 +1,48 @@
+{% extends "users/base.html" %}
+{% block title %}Book{% endblock %}
+{% block content %}
+<div class="container-fluid">
+
+    {% if object_list|length > 0 %}
+    <div class="col" style="padding-bottom: 1rem;">
+        <div class="card">
+            <div class="card-header text-center">
+                Slots
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for obj in object_list %}
+                <li class="list-group-item">
+                    <p class="float-left">{{ obj.number }}</p>
+                    <p class="float-right">
+                        <a class="btn btn-success" href="{% url 'reserve' obj.pk %}">Reserve</a>
+                    </p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    {% else %}
+
+    <div class="col" style="padding-bottom: 1rem;">
+        <div class="card">
+            <div class="card-header text-center">
+                Alert
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+
+                    <p class="alert alert-danger float-left">No Slots Available!</p>
+                    <p class="float-right">
+                        <a class="btn btn-success" href="{% url 'home' %}">Goto Home</a>
+                    </p>
+
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
