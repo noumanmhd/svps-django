@@ -21,14 +21,17 @@ def home(request):
     context = {}
     t = timezone.now()
     number = None
+    slot_pk = 100
     context['name'] = request.user.get_full_name().title()
     slot = Slot.objects.filter(user=request.user, time__gt=t).first()
     if slot:
         t = slot.time
         number = slot.number
+        slot_pk = slot.pk
     timer = t.strftime("%B %d, %Y %T")
     context['timer'] = timer
     context['number'] = number
+    context['slot_pk'] = slot_pk
 
     return render(request, template_name='book/home.html', context=context)
 
@@ -38,14 +41,17 @@ def profile(request):
     context = {}
     t = timezone.now()
     number = None
+    slot_pk = 100
     context['name'] = request.user.get_full_name().title()
     slot = Slot.objects.filter(user=request.user, time__gt=t).first()
     if slot:
         t = slot.time
         number = slot.number
+        slot_pk = slot.pk
     timer = t.strftime("%B %d, %Y %T")
     context['timer'] = timer
     context['number'] = number
+    context['slot_pk'] = slot_pk
     context['sub_status'] = request.user.profile.subscription > timezone.now()
     return render(request, template_name='book/profile.html', context=context)
 
@@ -81,6 +87,28 @@ def reserve(request, pk):
 
         messages.error(
             request, f"You already have a reservation [{check.number}]!")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def release(request, pk):
+    check = Slot.objects.filter(
+        user__pk=request.user.pk, time__gt=timezone.now())
+    if check.count() >  0 :
+        slot = Slot.objects.get(pk=pk)
+        if slot.time > timezone.now() and not slot.status:
+            slot.user = request.user
+            slot.time = timezone.now()
+            slot.save()
+            messages.success(
+                request, f"Slot [{slot.number}] is released!")
+            return redirect('home')
+        else:
+            messages.error(
+                request, f"Slot [{slot.number}] is already released!")
+    else:
+        messages.error(
+            request, f"Unable to release!")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
