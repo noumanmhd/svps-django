@@ -34,6 +34,7 @@
                         {% if user.is_superuser %}
                         <a class="nav-item nav-link" href="/admin">Admin</a>
                         <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                         {% else %}
                         <a class="nav-item nav-link" href="{% url 'book' %}">Book</a>
                         <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
