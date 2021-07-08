@@ -1,8 +1,9 @@
+import json 
 from datetime import datetime, timedelta
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.utils import timezone
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
@@ -111,6 +112,17 @@ def release(request, pk):
             request, f"Unable to release!")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+def update_state(request):
+    if request.META.get('REMOTE_ADDR') == '127.0.0.1':
+        data = json.loads(request.body.decode('utf-8'))
+        for k,v in data.items():
+            slot = Slot.objects.filter(number=k).first()
+            print(f"{k}: {v}")
+            if slot:
+                slot.status = v
+                slot.save()
+        return HttpResponse('',  200)
+    return HttpResponse('',  201)
 
 class SlotsListView(LoginRequiredMixin, ListView):
     model = Slot

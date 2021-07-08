@@ -6,6 +6,7 @@ from .views import (
     fresh_login,
     reserve,
     release,
+    update_state,
     SlotsListView
 )
 
@@ -15,5 +16,6 @@ urlpatterns = [
     path(r'book', SlotsListView.as_view(), name='book'),
     path(r'reserve/<int:pk>', reserve, name='reserve'),
     path(r'release/<int:pk>', release, name='release'),
+    path(r'update-state/', update_state, name='update-state'),
     path(r'fresh-login', fresh_login, name='fresh-login')
 ]
