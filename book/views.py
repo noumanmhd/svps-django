@@ -121,8 +121,18 @@ def update_state(request):
             if slot:
                 slot.status = v
                 slot.save()
-        return HttpResponse('',  200)
-    return HttpResponse('',  201)
+        return HttpResponse('',  status=200)
+    return HttpResponse('',  status=201)
+
+def check_plate(request):
+    if request.META.get('REMOTE_ADDR') == '127.0.0.1':
+        data = json.loads(request.body.decode('utf-8'))
+        
+        plates = Slot.objects.filter(
+        user__profile__plate__icontains=data['plate'], time__gt=timezone.now())
+        if plates.count() > 0:
+            return HttpResponse('',  status=200)
+    return HttpResponse('',  status=201)
 
 class SlotsListView(LoginRequiredMixin, ListView):
     model = Slot
