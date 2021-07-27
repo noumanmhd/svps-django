@@ -25,7 +25,7 @@ SECRET_KEY = 'nf_gy(q$ve(7=9x#j56-i+f2y+=k#eku%%ju&9!d29ej02enbr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
