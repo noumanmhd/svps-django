@@ -23,16 +23,20 @@ def home(request):
     t = timezone.now()
     number = None
     slot_pk = 100
+    slot_status = False
     context['name'] = request.user.get_full_name().title()
     slot = Slot.objects.filter(user=request.user, time__gt=t).first()
     if slot:
         t = slot.time
         number = slot.number
         slot_pk = slot.pk
+        slot_status = slot.status
+
     timer = t.strftime("%B %d, %Y %T")
     context['timer'] = timer
     context['number'] = number
     context['slot_pk'] = slot_pk
+    context['slot_status'] = slot_status
 
     return render(request, template_name='book/home.html', context=context)
 
@@ -43,16 +47,19 @@ def profile(request):
     t = timezone.now()
     number = None
     slot_pk = 100
+    slot_status = False
     context['name'] = request.user.get_full_name().title()
     slot = Slot.objects.filter(user=request.user, time__gt=t).first()
     if slot:
         t = slot.time
         number = slot.number
         slot_pk = slot.pk
+        slot_status = slot.status
     timer = t.strftime("%B %d, %Y %T")
     context['timer'] = timer
     context['number'] = number
     context['slot_pk'] = slot_pk
+    context['slot_status'] = slot_status
     context['sub_status'] = request.user.profile.subscription > timezone.now()
     return render(request, template_name='book/profile.html', context=context)
 

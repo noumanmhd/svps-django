@@ -8,7 +8,7 @@ class Slot(models.Model):
                                null=True,
                                blank=True,
                                on_delete=models.CASCADE)
-    number = models.CharField(max_length=255, null=True , blank=True)
+    number = models.CharField(max_length=255, primary_key=True, default="AX")
     status = models.BooleanField(default=False)
     time = models.DateTimeField(default=timezone.now)
 

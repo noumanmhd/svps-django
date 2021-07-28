@@ -55,15 +55,17 @@
                 <p class="float-left">Slot</p>
                 <p class="float-right">{{ number }}</p>
             </li>
-            <li class="list-group-item">
-                <p class="float-left">Time Remaining</p>
-                <p class="float-right" id="timeCounter"></p>
-            </li>
-            <li class="list-group-item">
-                <p class="float-right">
-                    <a class="btn btn-danger" href="{% url 'release' slot_pk %}">Release</a>
-                </p>
-            </li>
+                {% if not slot_status %}
+                <li class="list-group-item">
+                    <p class="float-left">Time Remaining</p>
+                    <p class="float-right" id="timeCounter"></p>
+                </li>
+                <li class="list-group-item">
+                    <p class="float-right">
+                        <a class="btn btn-danger" href="{% url 'release' slot_pk %}">Release</a>
+                    </p>
+                </li>
+                {% endif %}
             {% else %}
             <li class="list-group-item">
                 <p class="float-left">No Reservation</p>

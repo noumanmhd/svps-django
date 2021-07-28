@@ -8,7 +8,7 @@ def sub_routine():
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     phone = models.CharField(max_length=255, null=True, blank=True)
     plate = models.CharField(max_length=255, null=True, blank=True, unique=True)
     cnic = models.CharField(max_length=255, null=True, blank=True)
